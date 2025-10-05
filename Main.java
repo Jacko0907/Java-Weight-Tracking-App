@@ -12,10 +12,12 @@ public class Main {
             System.out.println("1. Add new entry");
             System.out.println("2. View all entries");
             System.out.println("3. Delete entry by date");
-            System.out.println("4. View stats (avg, min, max, total lost)");
+            System.out.println("4. View stats (avg, min, max, total lost, rewards)");
             System.out.println("5. Update entry by date");
-            System.out.println("6. Exit");
+            System.out.println("6. Buy sweet treat (-1 Blipcoin)");
+            System.out.println("7. Exit");
             System.out.print("Choose option: ");
+
 
             int choice;
             try {
@@ -76,6 +78,8 @@ public class Main {
                     } else {
                         System.out.println("No change from starting weight.");
                     }
+
+                    System.out.println("Blipcoins earned: " + tracker.getBlipcoins());
                     break;
 
                 case 5: // update entry
@@ -93,10 +97,15 @@ public class Main {
                     }
                     break;
 
-                case 6: // exit
+                case 6: // buy sweet treat
+                    tracker.buySweetTreat();
+                    break;
+
+                case 7: // exit
                     System.out.println("Goodbye!");
                     scanner.close();
                     return;
+
 
             }
         }
