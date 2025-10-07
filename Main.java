@@ -8,15 +8,17 @@ public class Main {
         WeightTracker tracker = new WeightTracker("weights.txt");
 
         while (true) {
-            System.out.println("\n--- Weight Tracker ---");
             System.out.println("1. Add new entry");
             System.out.println("2. View all entries");
             System.out.println("3. Delete entry by date");
-            System.out.println("4. View stats (avg, min, max, total lost, rewards)");
+            System.out.println("4. View stats");
             System.out.println("5. Update entry by date");
             System.out.println("6. Buy sweet treat (-1 Blipcoin)");
-            System.out.println("7. Exit");
-            System.out.print("Choose option: ");
+            System.out.println("7. Set or view height");
+            System.out.println("8. Set or view goal weight");
+            System.out.println("9. Exit");
+
+
 
 
             int choice;
@@ -65,22 +67,21 @@ public class Main {
                     }
                     break;
 
-                case 4: // stats
+                case 4:
                     System.out.println("Average: " + tracker.averageWeight());
                     System.out.println("Min: " + tracker.minWeight());
                     System.out.println("Max: " + tracker.maxWeight());
-
-                    double lost = tracker.totalWeightLost();
-                    if (lost > 0) {
-                        System.out.println("Total lost: " + lost);
-                    } else if (lost < 0) {
-                        System.out.println("Total gained: " + Math.abs(lost));
-                    } else {
-                        System.out.println("No change from starting weight.");
-                    }
-
+                    System.out.println("Total lost: " + tracker.totalWeightLost());
                     System.out.println("Blipcoins earned: " + tracker.getBlipcoins());
+
+                    if (tracker.getGoalWeight() > 0) {
+                        System.out.println(tracker.getGoalProgressBar());
+                        System.out.printf("You have %.1f lbs left to reach your goal.%n", tracker.poundsToGoal());
+                    } else {
+                        System.out.println("No goal weight set yet.");
+                    }
                     break;
+
 
                 case 5: // update entry
                     try {
@@ -101,10 +102,37 @@ public class Main {
                     tracker.buySweetTreat();
                     break;
 
-                case 7: // exit
+                case 7: // height setup
+                    System.out.println("Current height: " + tracker.getHeight() + " inches");
+                    System.out.print("Enter new height in inches (or 0 to keep current): ");
+                    double h = scanner.nextDouble();
+                    scanner.nextLine();
+                    if (h > 0) {
+                        tracker.setHeight(h);
+                        System.out.println("Height updated.");
+                    }
+                    break;
+
+                case 8: // goal setup
+                    System.out.println("Current goal weight: " + tracker.getGoalWeight());
+                    System.out.print("Enter new goal weight (or 0 to keep current): ");
+                    double g = scanner.nextDouble();
+                    scanner.nextLine();
+                    if (g > 0) {
+                        tracker.setGoalWeight(g);
+                        System.out.println("Goal weight set to " + g + " lbs.");
+                    }
+                    if (tracker.getGoalWeight() > 0) {
+                        double remaining = tracker.poundsToGoal();
+                        System.out.printf("You have %.1f lbs left to reach your goal.%n", remaining);
+                    }
+                    break;
+
+                case 9:
                     System.out.println("Goodbye!");
                     scanner.close();
                     return;
+
 
 
             }
