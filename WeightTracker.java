@@ -2,6 +2,7 @@ import java.io.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Scanner;
 
 public class WeightTracker {
     private File file;
@@ -39,7 +40,22 @@ public class WeightTracker {
         return goalWeight;
     }
 
-    public void addEntry(WeightEntry entry) {
+    public void addEntry(WeightEntry entry, Scanner scanner) {
+        WeightEntry existing = findEntryByDate(entry.getDate());
+        if (existing != null) {
+            System.out.printf("⚠️  An entry for %s already exists (%.1f lbs).%n", existing.getDate(), existing.getWeight());
+            System.out.print("Would you like to update it instead? (y/n): ");
+            String choice = scanner.nextLine().trim().toLowerCase();
+
+            if (choice.equals("y")) {
+                updateEntry(existing.getDate(), entry.getWeight());
+                System.out.println("Entry updated.");
+            } else {
+                System.out.println("Entry not added.");
+            }
+            return;
+        }
+
         entries.add(entry);
         checkGoalAchievement();
         saveEntries();
@@ -52,6 +68,7 @@ public class WeightTracker {
             System.out.println("Set your height to enable BMI tracking.");
         }
     }
+
 
     public void deleteEntry(LocalDate date) {
         entries.removeIf(e -> e.getDate().equals(date));
@@ -69,6 +86,16 @@ public class WeightTracker {
         }
         System.out.println("No entry found for that date.");
     }
+
+    public WeightEntry findEntryByDate(LocalDate date) {
+        for (WeightEntry e : entries) {
+            if (e.getDate().equals(date)) {
+                return e;
+            }
+        }
+        return null;
+    }
+
 
     public List<WeightEntry> getEntries() {
         return new ArrayList<>(entries);

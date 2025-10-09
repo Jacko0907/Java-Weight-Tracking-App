@@ -38,7 +38,7 @@ public class Main {
                         System.out.print("Enter weight: ");
                         double weight = Double.parseDouble(scanner.nextLine());
 
-                        tracker.addEntry(new WeightEntry(date, weight));
+                        tracker.addEntry(new WeightEntry(date, weight), scanner);
                         System.out.println("Entry added.");
                     } catch (Exception e) {
                         System.out.println("Invalid input. Please try again.");
